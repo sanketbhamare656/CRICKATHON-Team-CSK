@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Score — IPL Pulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --primary: #38bdf8;
+            --secondary: #0f172a;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --bg-tertiary: #f1f5f9;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --border: rgba(0, 0, 0, 0.1);
+            --radius-lg: 12px;
+            --ff-display: 'Bebas Neue', sans-serif;
+            --ff-body: 'DM Sans', sans-serif;
+            --ff-mono: 'JetBrains Mono', monospace;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #0f172a;
+                --bg-secondary: #1e293b;
+                --bg-tertiary: #020617;
+                --text-primary: #f8fafc;
+                --text-secondary: #94a3b8;
+                --border: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        body {
+            font-family: var(--ff-body);
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        /* HEADER */
+        header {
+            background: var(--bg-primary);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .logo {
+            font-family: var(--ff-display);
+            font-size: 24px;
+            letter-spacing: 1px;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 20px auto;
+            padding: 0 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        /* Re-using previous dashboard styles but updated for the new theme */
+        .panel {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: var(--bg-primary);
+            overflow: hidden;
+        }
+
+        .panel-head {
+            background: var(--bg-secondary);
+            padding: 8px 14px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .panel-body {
+            padding: 10px 14px;
+        }
+
+        /* Match Header */
+        .match-card {
+            border-radius: var(--radius-lg);
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .match-top {
+            background: var(--bg-secondary);
+            padding: 8px 16px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .match-main {
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            text-align: center;
+        }
+
+        .team-name {
+            font-family: var(--ff-display);
+            font-size: 28px;
+        }
+
+        .score {
+            font-family: var(--ff-display);
+            font-size: 36px;
+            color: var(--primary);
+        }
+
+        /* Charts, Tables, and other components from previous version... */
+        .prob-track {
+            height: 10px;
+            border-radius: 5px;
+            background: var(--bg-tertiary);
+            overflow: hidden;
+            margin: 10px 0;
+            display: flex;
+        }
+
+        .prob-fill {
+            background: var(--primary);
+            height: 100%;
+            transition: 0.5s;
+        }
+
+        .win-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .main-grid,
+        .charts-grid,
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        @media (max-width: 640px) {
+
+            .main-grid,
+            .charts-grid,
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .batter-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .batter-row:last-child {
+            border-bottom: none;
+        }
+
+        .ball {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: bold;
+            margin-right: 4px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+        }
+
+        .ball.wicket {
+            background: #fee2e2;
+            color: #ef4444;
+            border-color: #fca5a5;
+        }
+
+        .ball.run4 {
+            background: #dcfce7;
+            color: #16a34a;
+            border-color: #86efac;
+        }
+
+        .ball.run6 {
+            background: #fef9c3;
+            color: #ca8a04;
+            border-color: #fde047;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 20px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="/" class="logo">🏏 IPL PULSE</a>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/live-score" class="active">Live Score</a>
+            <a href="/news">News</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="match-card">
+            <div class="match-top">
+                <span id="venue">Loading Venue...</span>
+                <span id="status-badge" style="color:#ef4444; font-weight:bold">● LIVE</span>
+            </div>
+            <div class="match-main">
+                <div>
+                    <div class="team-name" id="t1-name">TEAM A</div>
+                    <div id="t1-cap" style="font-size:11px; color:var(--text-secondary)">Captain</div>
+                </div>
+                <div class="score">
+                    <span id="t1-runs">165</span><span style="font-size:20px; color:var(--text-secondary)">/<span
+                            id="t1-wkts">0</span></span>
+                    <div style="font-size:12px; color:var(--text-secondary); font-family:var(--ff-body)"
+                        id="live-overs">0.0 Overs</div>
+                </div>
+                <div>
+                    <div class="team-name" id="t2-name">TEAM B</div>
+                    <div id="t2-cap" style="font-size:11px; color:var(--text-secondary)">Captain</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head"><span class="panel-title">Win Probability</span></div>
+            <div class="panel-body">
+                <div class="win-labels">
+                    <span id="t1-prob-lbl">Team A 50%</span>
+                    <span id="t2-prob-lbl">Team B 50%</span>
+                </div>
+                <div class="prob-track">
+                    <div class="prob-fill" id="prob-bar" style="width: 50%"></div>
+                </div>
+                <div
+                    style="display:grid; grid-template-columns: repeat(4, 1fr); gap: 10px; text-align:center; margin-top:10px">
+                    <div>
+                        <div id="crr" style="font-weight:bold">0.0</div>
+                        <div style="font-size:9px">CRR</div>
+                    </div>
+                    <div>
+                        <div id="rrr" style="font-weight:bold">0.0</div>
+                        <div style="font-size:9px">RRR</div>
+                    </div>
+                    <div>
+                        <div id="balls" style="font-weight:bold">0</div>
+                        <div style="font-size:9px">BALLS</div>
+                    </div>
+                    <div>
+                        <div id="runs-req" style="font-weight:bold">0</div>
+                        <div style="font-size:9px">RUNS REQ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <div class="panel">
+                <div class="panel-head"><span class="panel-title">Current Batting</span></div>
+                <div class="panel-body" id="batting-list"></div>
+            </div>
+            <div class="panel">
+                <div class="panel-head"><span class="panel-title">Current Bowling</span></div>
+                <div class="panel-body" id="bowling-details">
+                    <div style="font-size:12px; color:var(--text-secondary)">Waiting for bowling data...</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="charts-grid">
+            <div class="panel">
+                <div class="panel-head"><span class="panel-title">Score Graph</span></div>
+                <div class="panel-body" style="height:200px"><canvas id="scoreChart"></canvas></div>
+            </div>
+            <div class="panel">
+                <div class="panel-head"><span class="panel-title">Run Dist.</span></div>
+                <div class="panel-body" style="height:200px"><canvas id="distChart"></canvas></div>
+            </div>
+        </div>
+
+        <div class="bottom-grid">
+            <div class="panel">
+                <div class="panel-head"><span class="panel-title">Last Balls</span></div>
+                <div class="panel-body" id="recent-balls"></div>
+            </div>
+            <div class="panel">
+                <div class="panel-head"><span class="panel-title">AI Insight</span></div>
+                <div class="panel-body" id="ai-insight" style="font-size:13px; font-style:italic">Analyzing match
+                    dynamics...</div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head"><span class="panel-title">Fall of Wickets</span></div>
+            <div class="panel-body">
+                <div id="fow-list" style="display:flex; flex-wrap:wrap; gap:10px; font-size:12px; color:var(--text-secondary)"></div>
+            </div>
+        </div>
+
+        <div class="panel">
+            <div class="panel-head"><span class="panel-title">Playing XI</span></div>
+            <div class="panel-body">
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div style="font-weight:bold; color:var(--primary); margin-bottom:10px; font-size:14px"
+                            id="xi-t1-name">SRH XI</div>
+                        <div id="xi-t1-list" style="font-size:12px; line-height:1.8; color:var(--text-secondary)"></div>
+                    </div>
+                    <div>
+                        <div style="font-weight:bold; color:var(--primary); margin-bottom:10px; font-size:14px"
+                            id="xi-t2-name">KKR XI</div>
+                        <div id="xi-t2-list" style="font-size:12px; line-height:1.8; color:var(--text-secondary)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2026 IPL Pulse Platform. AI-Powered Live Analytics.
+    </footer>
+
+    <script>
+        let scoreChart, distChart;
+
+        function initCharts() {
+            const sCtx = document.getElementById('scoreChart').getContext('2d');
+            scoreChart = new Chart(sCtx, {
+                type: 'line',
+                data: { labels: [], datasets: [{ label: 'Runs', data: [], borderColor: '#38bdf8', tension: 0.4 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+            });
+            const dCtx = document.getElementById('distChart').getContext('2d');
+            distChart = new Chart(dCtx, {
+                type: 'doughnut',
+                data: { labels: ['Dots', '1s', '4s', '6s'], datasets: [{ data: [1, 1, 1, 1], backgroundColor: ['#94a3b8', '#86efac', '#38bdf8', '#fbbf24'] }] },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '70%' }
+            });
+        }
+
+        async function update() {
+            try {
+                const r = await fetch('/api/match-data');
+                const d = await r.json();
+                const m = d.match_info;
+
+                // Scoreboard Details
+                try {
+                    document.getElementById('venue').innerText = m.stadium;
+                    document.getElementById('t1-name').innerText = m.team1.short;
+                    document.getElementById('t1-cap').innerText = "Captain: " + (m.team1.captain || "TBD");
+                    document.getElementById('t1-runs').innerText = m.team1.runs;
+                    document.getElementById('t1-wkts').innerText = m.team1.wkts;
+                    document.getElementById('live-overs').innerText = m.live_over + " Overs";
+                    document.getElementById('t2-name').innerText = m.team2.short;
+                    document.getElementById('t2-cap').innerText = "Captain: " + (m.team2.captain || "TBD");
+                } catch(e) { console.warn("Score update fail:", e); }
+
+                // Playing XI
+                try {
+                    document.getElementById('xi-t1-name').innerText = m.team1.short + " XI";
+                    document.getElementById('xi-t2-name').innerText = m.team2.short + " XI";
+                    if (d.team1_xi) document.getElementById('xi-t1-list').innerText = d.team1_xi.join(', ');
+                    if (d.team2_xi) document.getElementById('xi-t2-list').innerText = d.team2_xi.join(', ');
+                } catch(e) { }
+
+                // Win Probability
+                try {
+                    if (d.win_prob) {
+                        document.getElementById('t1-prob-lbl').innerText = m.team1.short + " " + d.win_prob.team1 + "%";
+                        document.getElementById('t2-prob-lbl').innerText = m.team2.short + " " + d.win_prob.team2 + "%";
+                        document.getElementById('prob-bar').style.width = d.win_prob.team1 + "%";
+                        document.getElementById('crr').innerText = d.win_prob.crr;
+                        document.getElementById('rrr').innerText = d.win_prob.rrr;
+                        document.getElementById('balls').innerText = d.win_prob.balls_left;
+                        document.getElementById('runs-req').innerText = d.win_prob.runs_needed;
+                    }
+                } catch(e) { }
+
+                // Batting List
+                try {
+                    const bl = document.getElementById('batting-list');
+                    bl.innerHTML = d.batting.map(b => `<div class="batter-row"><span>${b.is_striker ? '🏏' : ''} ${b.name}</span><span><b>${b.runs}</b> (${b.balls})</span></div>`).join('');
+                } catch(e) { }
+
+                // Bowling Details
+                try {
+                    const bowlList = document.getElementById('bowling-details');
+                    if (d.bowling && Array.isArray(d.bowling)) {
+                        bowlList.innerHTML = d.bowling.map(bowl => `
+                            <div style="margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:8px">
+                                <div style="display:flex; justify-content:space-between; align-items:center">
+                                    <div style="font-weight:bold; font-size:13px">${bowl.is_active ? '● ' : ''}${bowl.name}</div>
+                                    <div style="font-size:11px; color:var(--text-secondary)">${bowl.overs}-${bowl.runs}-${bowl.wkts} (Eco: ${bowl.eco})</div>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                } catch(e) { }
+
+                // Last Balls & AI Insight
+                try {
+                    const hist = document.getElementById('recent-balls');
+                    hist.innerHTML = d.ball_history.slice(0, 3).map(h => `<div style="margin-bottom:8px"><div style="font-size:10px">${h.bowler} (Ov ${h.over})</div><div style="margin-top:4px">${h.balls.map(b => `<span class="ball ${b == 'W' ? 'wicket' : b == '4' || b == '6' ? 'run' + b : ''}">${b}</span>`).join('')}</div></div>`).join('');
+                    document.getElementById('ai-insight').innerText = d.ai_insight;
+                } catch(e) { }
+
+                // FOW
+                try {
+                    const fowList = document.getElementById('fow-list');
+                    if (d.fow) {
+                        fowList.innerHTML = d.fow.map(f => `<span><b>${f.num}-${f.score.split('(')[0]}</b> (${f.name}, ${f.over} ov)</span>`).join(' <span style="opacity:0.3">|</span> ');
+                    }
+                } catch(e) { }
+
+                // Charts
+                try {
+                    if (d.score_history && scoreChart) {
+                        scoreChart.data.labels = d.score_history.map(s => 'Ov ' + s.over);
+                        scoreChart.data.datasets[0].data = d.score_history.map(s => s.runs);
+                        scoreChart.update();
+                    }
+                    if (d.run_dist && distChart) {
+                        distChart.data.datasets[0].data = [d.run_dist.dots, d.run_dist.ones, d.run_dist.fours, d.run_dist.sixes];
+                        distChart.update();
+                    }
+                } catch(e) { }
+            } catch (e) { console.error("Update loop error:", e); }
+        }
+
+        initCharts();
+        update();
+        setInterval(update, 5000); // Update every 5 seconds for snappier feel
+    </script>
+</body>
+
+</html>

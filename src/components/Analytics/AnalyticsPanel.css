@@ -1,0 +1,168 @@
+.analytics-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+.chart-card {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.legend {
+  gap: 16px;
+  font-size: 12px;
+}
+
+.legend-color {
+  display: inline-block;
+  width: 12px;
+  height: 4px;
+  border-radius: 2px;
+  margin-right: 6px;
+  vertical-align: middle;
+}
+
+.legend-color.crr { background: var(--neon-blue); }
+.legend-color.rrr { background: var(--warning-orange); }
+
+.chart-container {
+  position: relative;
+  flex: 1;
+  margin-top: 16px;
+  min-height: 250px;
+}
+
+.animated-chart {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.grid-line {
+  stroke: rgba(255, 255, 255, 0.05);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+}
+
+.danger-zone {
+  fill: rgba(255, 51, 102, 0.05);
+}
+
+.crr-line {
+  fill: none;
+  stroke: var(--neon-blue);
+  stroke-width: 3;
+  filter: drop-shadow(0 0 6px rgba(0, 208, 255, 0.5));
+}
+
+.rrr-line {
+  fill: none;
+  stroke: var(--warning-orange);
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+}
+
+.crr-point {
+  fill: var(--neon-blue);
+}
+
+.rrr-point {
+  fill: var(--warning-orange);
+}
+
+/* SVG Line Draw Animation */
+@keyframes drawLine {
+  from { stroke-dasharray: 2000; stroke-dashoffset: 2000; }
+  to { stroke-dashoffset: 0; }
+}
+
+.animate-draw {
+  animation: drawLine 2s ease-out forwards;
+}
+
+.animate-draw-delayed {
+  animation: drawLine 2s ease-out 0.5s forwards;
+}
+
+.tooltip {
+  position: absolute;
+  background: rgba(10, 12, 16, 0.9);
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  transform: translate(-50%, -100%);
+  z-index: 10;
+}
+
+.tooltip-over {
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.tooltip-crr { color: var(--neon-blue); font-weight: 600; }
+.tooltip-rrr { color: var(--warning-orange); font-weight: 600; }
+
+.grid-card {
+  flex: 1;
+}
+
+.over-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(36px, 1fr));
+  gap: 8px;
+  margin-top: 16px;
+  margin-bottom: 24px;
+}
+
+.over-box-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.over-num {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.over-box {
+  width: 100%;
+  height: 24px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: var(--transition);
+}
+
+.over-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.status-safe { background: rgba(0, 255, 157, 0.8); box-shadow: 0 0 8px rgba(0, 255, 157, 0.3); }
+.status-warning { background: rgba(255, 153, 0, 0.8); box-shadow: 0 0 8px rgba(255, 153, 0, 0.3); }
+.status-danger { background: rgba(255, 51, 102, 0.8); box-shadow: 0 0 8px rgba(255, 51, 102, 0.3); }
+.status-empty { background: rgba(255, 255, 255, 0.05); border: 1px dashed rgba(255, 255, 255, 0.2); }
+
+.grid-legend {
+  font-size: 11px;
+  padding: 0 16px;
+}
+
+.status-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 4px;
+}
+
+.status-dot.safe { background: rgba(0, 255, 157, 0.8); }
+.status-dot.warning { background: rgba(255, 153, 0, 0.8); }
+.status-dot.danger { background: rgba(255, 51, 102, 0.8); }

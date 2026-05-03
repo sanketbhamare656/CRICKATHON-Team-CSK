@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IPL LIVE EL CLASICO — CSK vs MI</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;700&family=JetBrains+Mono:wght@500&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --csk-gold: #FFD700;
+            --mi-blue: #004BA0;
+            --neon-glow: rgba(255, 215, 0, 0.3);
+            --glass: rgba(20, 20, 25, 0.85);
+            --text: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1a2a6c, #b21f1f, #fdbb2d);
+            background-attachment: fixed;
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text);
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* BACKGROUND STADIUM FEEL */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1540747913346-19e32dc3e97e?auto=format&fit=crop&q=80') center/cover;
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .main-wrapper {
+            display: grid;
+            grid-template-columns: 200px 1fr 200px;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        /* SIDE CHARACTER POSTERS */
+        .character-poster {
+            position: sticky;
+            top: 20px;
+            height: 85vh;
+            background: var(--glass);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .poster-name {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3rem;
+            line-height: 0.9;
+            text-align: center;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+
+        .poster-bg-text {
+            position: absolute;
+            top: 20%;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 8rem;
+            opacity: 0.05;
+            writing-mode: vertical-rl;
+            color: #fff;
+        }
+
+        .csk-poster {
+            border-left: 5px solid var(--csk-gold);
+            color: var(--csk-gold);
+        }
+
+        .mi-poster {
+            border-right: 5px solid var(--mi-blue);
+            color: #00d2ff;
+        }
+
+        /* CENTRAL SCORECARD */
+        .content-area {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .live-header {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .live-header::after {
+            content: "LIVE BROADCAST";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #e24b4a;
+            padding: 2px 15px;
+            font-family: 'Bebas Neue';
+            border-radius: 5px;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        .team-score-big {
+            font-family: 'Bebas Neue';
+            font-size: 5rem;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .vs-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, var(--csk-gold), var(--mi-blue));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Bebas Neue';
+            font-size: 2rem;
+            margin: 0 20px;
+            border: 4px solid #fff;
+        }
+
+        /* PANELS */
+        .stats-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: var(--glass);
+            border-radius: 15px;
+            border-top: 4px solid var(--csk-gold);
+            padding: 20px;
+        }
+
+        .panel.bowling {
+            border-top-color: var(--mi-blue);
+        }
+
+        .panel-title {
+            font-family: 'Bebas Neue';
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .player-name {
+            font-weight: bold;
+            color: var(--csk-gold);
+        }
+
+        /* CHATBOT */
+        .cricket-ai {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(90deg, #1e3a8a, #1e40af);
+            padding: 15px;
+            font-family: 'Bebas Neue';
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .chat-body {
+            height: 200px;
+            padding: 20px;
+            overflow-y: auto;
+            font-size: 14px;
+        }
+
+        .ai-msg {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 10px;
+            border-left: 3px solid var(--csk-gold);
+        }
+
+        .input-area {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            gap: 10px;
+        }
+
+        input {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 25px;
+            color: #fff;
+            outline: none;
+        }
+
+        button {
+            background: var(--csk-gold);
+            border: none;
+            padding: 0 20px;
+            border-radius: 25px;
+            font-family: 'Bebas Neue';
+            cursor: pointer;
+        }
+
+        @media (max-width: 1000px) {
+            .main-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .character-poster {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="main-wrapper">
+
+        <aside class="character-poster csk-poster">
+            <div class="poster-bg-text">THALA 7</div>
+            <div class="poster-name">MS<br>DHONI</div>
+            <div style="font-size: 0.8rem; letter-spacing: 3px; margin-top: 10px;">THE FINISHER</div>
+        </aside>
+
+        <main class="content-area">
+
+            <div class="live-header">
+                <div class="team-info">
+                    <h2 style="font-family:'Bebas Neue'; font-size: 2rem;">CHENNAI</h2>
+                    <div class="team-score-big" style="color: var(--csk-gold);">165/4</div>
+                    <p style="opacity: 0.7;">OVERS: 17.3</p>
+                </div>
+
+                <div class="vs-circle">VS</div>
+
+                <div class="team-info">
+                    <h2 style="font-family:'Bebas Neue'; font-size: 2rem;">MUMBAI</h2>
+                    <div class="team-score-big" style="color: #00d2ff;">Y.T.B</div>
+                    <p style="opacity: 0.7;">TARGET: N/A</p>
+                </div>
+            </div>
+
+            <div style="background:var(--glass); padding: 15px; border-radius: 10px;">
+                <div
+                    style="display:flex; justify-content: space-between; font-family:'Bebas Neue'; margin-bottom: 5px;">
+                    <span>WIN PROBABILITY</span>
+                    <span>CSK 67% | MI 33%</span>
+                </div>
+                <div style="height: 10px; background: #333; border-radius: 5px; overflow: hidden; display: flex;">
+                    <div style="width: 67%; background: var(--csk-gold);"></div>
+                    <div style="width: 33%; background: var(--mi-blue);"></div>
+                </div>
+            </div>
+
+            <div class="stats-container">
+                <section class="panel">
+                    <div class="panel-title">
+                        <span>CURRENT BATTING</span>
+                        <span style="font-size: 0.8rem; color: var(--csk-gold);">RR: 9.43</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="player-name">MS DHONI*</span>
+                        <span style="font-family: 'JetBrains Mono';">45 (32)</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="player-name">R JADEJA</span>
+                        <span style="font-family: 'JetBrains Mono';">28 (21)</span>
+                    </div>
+                    <div
+                        style="margin-top: 15px; font-size: 0.9rem; padding: 10px; background: rgba(255,215,0,0.1); border-radius: 5px; border: 1px dashed var(--csk-gold);">
+                        Partnership: 73 (53)
+                    </div>
+                </section>
+
+                <section class="panel bowling">
+                    <div class="panel-title">
+                        <span>CURRENT BOWLER</span>
+                        <span style="font-size: 0.8rem; color: #00d2ff;">SPEED: 148 KPH</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="player-name" style="color: #00d2ff;">JASPRIT BUMRAH</span>
+                        <span style="font-family: 'JetBrains Mono';">2/38 (3.3)</span>
+                    </div>
+                    <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; margin-top: 15px;">
+                        <div
+                            style="background: #e24b4a; height: 30px; display:flex; align-items:center; justify-content:center; border-radius:3px; font-weight:bold;">
+                            6</div>
+                        <div style="background: #555; height: 30px; border-radius:3px;"></div>
+                        <div
+                            style="background: #4a90e2; height: 30px; display:flex; align-items:center; justify-content:center; border-radius:3px; font-size: 10px;">
+                            WD</div>
+                        <div
+                            style="background: #f5a623; height: 30px; display:flex; align-items:center; justify-content:center; border-radius:3px; font-weight:bold;">
+                            4</div>
+                        <div style="border: 1px dashed #777; height: 30px; border-radius:3px;"></div>
+                        <div style="border: 1px dashed #777; height: 30px; border-radius:3px;"></div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="cricket-ai">
+                <div class="chat-header">
+                    <span>🏏 CRICKET INSIGHTS AI</span>
+                    <span style="font-size: 0.7rem; background: #000; padding: 2px 8px; border-radius: 10px;">PRO
+                        MODE</span>
+                </div>
+                <div class="chat-body" id="chatBox">
+                    <div class="ai-msg">
+                        Welcome to the El Clasico. **56 needed off 15 balls**. The atmosphere is electric! Bumrah vs
+                        Dhoni — who are you backing?
+                    </div>
+                </div>
+                <div class="input-area">
+                    <input type="text" placeholder="Ask AI: What is Dhoni's strike rate against Bumrah?">
+                    <button>ASK AI</button>
+                </div>
+            </div>
+
+        </main>
+
+        <aside class="character-poster mi-poster">
+            <div class="poster-bg-text">HITMAN 45</div>
+            <div class="poster-name">ROHIT<br>SHARMA</div>
+            <div style="font-size: 0.8rem; letter-spacing: 3px; margin-top: 10px;">THE CAPTAIN</div>
+        </aside>
+
+    </div>
+
+</body>
+
+</html>

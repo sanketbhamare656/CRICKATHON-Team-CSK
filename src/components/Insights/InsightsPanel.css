@@ -1,0 +1,89 @@
+.insights-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  height: 100%;
+}
+
+.insights-header {
+  padding: 0 16px;
+}
+
+.section-title {
+  font-size: 16px;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.live-pulse {
+  font-size: 12px;
+  font-weight: 600;
+  animation: blink 2s infinite ease-in-out;
+}
+
+.insights-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.insight-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.insight-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.insight-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+}
+
+.type-momentum::before { background: var(--neon-green); box-shadow: 0 0 10px var(--neon-green); }
+.type-pressure::before { background: var(--warning-orange); box-shadow: 0 0 10px var(--warning-orange); }
+.type-prediction::before { background: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
+.type-insight::before { background: #b026ff; box-shadow: 0 0 10px #b026ff; }
+
+.insight-icon {
+  font-size: 24px;
+  background: rgba(255, 255, 255, 0.05);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.insight-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.insight-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.insight-desc {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}

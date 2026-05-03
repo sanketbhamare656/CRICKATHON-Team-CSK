@@ -1,0 +1,127 @@
+.hero-match-card {
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+}
+
+/* 3D Motion Blur Overlay Effect */
+.hero-match-card::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(from 180deg at 50% 50%, transparent 0deg, rgba(255,255,255,0.03) 360deg);
+  animation: spin 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+.hero-header {
+  margin-bottom: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.team-badge {
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 2px;
+}
+
+.vs-badge {
+  font-size: 14px;
+  font-weight: 700;
+  background: rgba(255,255,255,0.05);
+  padding: 4px 12px;
+  border-radius: 20px;
+}
+
+.hero-score {
+  text-align: center;
+  margin: 32px 0;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-score .runs {
+  font-size: 84px;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -3px;
+  text-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  background: linear-gradient(to bottom, #ffffff, #a0aec0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-score .wickets {
+  font-size: 42px;
+  color: var(--text-secondary);
+  -webkit-text-fill-color: var(--text-secondary);
+}
+
+.hero-score .overs {
+  font-size: 16px;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+.run-rates-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.rate-box {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0,0,0,0.4);
+}
+
+.rate-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.rate-value {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+.recent-balls-section {
+  position: relative;
+  z-index: 2;
+}
+
+.ball {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.ball-danger { color: var(--warning-orange); border-color: var(--warning-orange); background: rgba(255, 75, 43, 0.1); }
+.ball-blue { color: var(--neon-blue); border-color: var(--neon-blue); background: rgba(0, 208, 255, 0.1); }
+.ball-dot { color: var(--text-secondary); }

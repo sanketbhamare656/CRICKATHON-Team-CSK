@@ -1,0 +1,84 @@
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0;
+  width: 100%;
+}
+
+.league-switcher {
+  display: flex;
+  gap: 8px;
+  padding: 6px;
+  border-radius: 12px;
+}
+
+.league-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.league-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.league-btn.active {
+  background: rgba(0, 208, 255, 0.1);
+  box-shadow: 0 0 10px rgba(0, 208, 255, 0.2);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.live-badge {
+  background: rgba(255, 51, 102, 0.1);
+  border: 1px solid rgba(255, 51, 102, 0.3);
+  padding: 8px 16px;
+  border-radius: 20px;
+  gap: 8px;
+  box-shadow: 0 0 15px rgba(255, 51, 102, 0.2);
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--danger-red);
+  border-radius: 50%;
+}
+
+.live-text {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.user-profile {
+  padding: 4px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.user-profile:hover {
+  transform: scale(1.05);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}

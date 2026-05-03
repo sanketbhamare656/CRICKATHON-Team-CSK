@@ -1,0 +1,271 @@
+{
+    "match_info": {
+        "status": "Innings Break",
+        "stadium": "Rajiv Gandhi International Stadium",
+        "venue_info": "Hyderabad \u2022 Toss: SRH (Batting)",
+        "live_over": "18.6",
+        "team1": {
+            "name": "Sunrisers Hyderabad",
+            "short": "SRH",
+            "runs": "165",
+            "wkts": "10",
+            "overs": "18.6",
+            "captain": "Pat Cummins"
+        },
+        "team2": {
+            "name": "Kolkata Knight Riders",
+            "short": "KKR",
+            "runs": "0",
+            "wkts": "0",
+            "overs": "0.0",
+            "captain": "Shreyas Iyer",
+            "status": "Innings Break"
+        }
+    },
+    "team1_xi": [
+        "Travis Head",
+        "Abhishek Sharma",
+        "Aiden Markram",
+        "Nitish Reddy",
+        "Heinrich Klaasen",
+        "Abdul Samad",
+        "Shahbaz Ahmed",
+        "Pat Cummins",
+        "B. Kumar",
+        "M. Markande",
+        "T. Natarajan"
+    ],
+    "team2_xi": [
+        "Phil Salt",
+        "Sunil Narine",
+        "A. Raghuvanshi",
+        "Shreyas Iyer",
+        "Venkatesh Iyer",
+        "Rinku Singh",
+        "Andre Russell",
+        "Ramandeep Singh",
+        "Mitchell Starc",
+        "V. Chakaravarthy",
+        "Harshit Rana"
+    ],
+    "win_prob": {
+        "team1": 32,
+        "team2": 68,
+        "crr": 8.68,
+        "rrr": 8.3,
+        "runs_needed": 166,
+        "balls_left": 120
+    },
+    "batting": [
+        {
+            "name": "Eshan Malinga",
+            "runs": 2,
+            "balls": 6,
+            "fours": 0,
+            "sixes": 0,
+            "sr": 33.33,
+            "is_striker": true
+        },
+        {
+            "name": "Harshal Patel",
+            "runs": 6,
+            "balls": 5,
+            "fours": 1,
+            "sixes": 0,
+            "sr": 120.0,
+            "is_striker": false
+        }
+    ],
+    "partnership": {
+        "runs": 9,
+        "balls": 11
+    },
+    "bowling": [
+        {
+            "name": "Vaibhav Arora",
+            "overs": 3.0,
+            "runs": 25,
+            "wkts": 1,
+            "eco": 8.33,
+            "speed": 138,
+            "swing": {
+                "in": 60,
+                "out": 40
+            },
+            "is_active": true
+        },
+        {
+            "name": "Kartik Tyagi",
+            "overs": 4.0,
+            "runs": 30,
+            "wkts": 2,
+            "eco": 7.5,
+            "speed": 145,
+            "swing": {
+                "in": 30,
+                "out": 70
+            },
+            "is_active": false
+        }
+    ],
+    "ball_history": [
+        {
+            "over": 19,
+            "bowler": "Kartik Tyagi",
+            "balls": [
+                "4",
+                "0",
+                "1",
+                "0",
+                "1",
+                "W"
+            ],
+            "total": 6
+        },
+        {
+            "over": 18,
+            "bowler": "Vaibhav Arora",
+            "balls": [
+                "W",
+                "0",
+                "0",
+                "Wd",
+                "1",
+                "1",
+                "0"
+            ],
+            "total": 3
+        },
+        {
+            "over": 17,
+            "bowler": "Sunil Narine",
+            "balls": [
+                "1",
+                "W",
+                "0",
+                "W",
+                "0",
+                "0"
+            ],
+            "total": 1
+        },
+        {
+            "over": 16,
+            "bowler": "Andre Russell",
+            "balls": [
+                "6",
+                "W",
+                "1",
+                "0",
+                "4",
+                "W"
+            ],
+            "total": 11
+        }
+    ],
+    "fow": [
+        {
+            "num": 10,
+            "name": "Harshal Patel",
+            "score": "6(5)",
+            "over": 18.6
+        },
+        {
+            "num": 9,
+            "name": "Pat Cummins",
+            "score": "1(4)",
+            "over": 18.4
+        },
+        {
+            "num": 8,
+            "name": "B. Kumar",
+            "score": "0(2)",
+            "over": 17.3
+        }
+    ],
+    "score_history": [
+        {
+            "over": 1,
+            "runs": 12
+        },
+        {
+            "over": 2,
+            "runs": 24
+        },
+        {
+            "over": 3,
+            "runs": 32
+        },
+        {
+            "over": 4,
+            "runs": 40
+        },
+        {
+            "over": 5,
+            "runs": 48
+        },
+        {
+            "over": 6,
+            "runs": 55
+        },
+        {
+            "over": 7,
+            "runs": 64
+        },
+        {
+            "over": 8,
+            "runs": 72
+        },
+        {
+            "over": 9,
+            "runs": 81
+        },
+        {
+            "over": 10,
+            "runs": 92
+        },
+        {
+            "over": 11,
+            "runs": 102
+        },
+        {
+            "over": 12,
+            "runs": 110
+        },
+        {
+            "over": 13,
+            "runs": 118
+        },
+        {
+            "over": 14,
+            "runs": 128
+        },
+        {
+            "over": 15,
+            "runs": 135
+        },
+        {
+            "over": 16,
+            "runs": 146
+        },
+        {
+            "over": 17,
+            "runs": 147
+        },
+        {
+            "over": 18,
+            "runs": 159
+        },
+        {
+            "over": 19,
+            "runs": 165
+        }
+    ],
+    "run_dist": {
+        "dots": 42,
+        "ones": 58,
+        "fours": 14,
+        "sixes": 8
+    },
+    "ai_insight": "KKR's death bowling was a masterclass. SRH were 135/3 in the 15th over but lost 7 wickets for 30 runs in just 24 balls. Sunil Narine (4-0-22-2) and Kartik Tyagi (4-0-30-2) were the game-changers."
+}

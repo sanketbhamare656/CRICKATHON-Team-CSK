@@ -1,0 +1,100 @@
+.prediction-engine {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.gauge-card {
+  padding: 32px 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.gauge-card::before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(255, 75, 43, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.text-center { text-align: center; }
+.mt-3 { margin-top: 24px; }
+
+.gauge-container {
+  position: relative;
+  margin-top: 32px;
+  padding-bottom: 20px;
+}
+
+.gauge-background {
+  height: 16px;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.gauge-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--warning-orange), var(--deep-purple));
+  border-radius: 8px;
+  transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 15px rgba(255, 75, 43, 0.4);
+}
+
+.gauge-labels {
+  margin-top: 12px;
+}
+
+.team-prob {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.text-deep-purple { color: #a275ff; }
+
+.prob-value {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -1px;
+}
+
+.prob-team {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.gauge-marker {
+  position: absolute;
+  top: -10px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: left 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.marker-dot {
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  border: 2px solid var(--warning-orange);
+}
+
+.marker-line {
+  height: 26px;
+  width: 2px;
+  background: #fff;
+}
+
+.prediction-text {
+  font-size: 13px;
+  line-height: 1.6;
+}

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL Guru Chat — Pulse</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        :root {
+            --primary: #38bdf8; --bg: #020617; --text: #f8fafc;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+        
+        header { padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; background: rgba(2, 6, 23, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+        .logo { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: var(--primary); text-decoration: none; }
+        nav a { text-decoration: none; color: #94a3b8; font-size: 14px; margin-left: 20px; transition: 0.3s; }
+        nav a:hover { color: var(--primary); }
+
+        .chat-container { flex: 1; overflow-y: auto; padding: 40px 20px; display: flex; flex-direction: column; gap: 20px; max-width: 800px; margin: 0 auto; width: 100%; scrollbar-width: none; }
+        .chat-container::-webkit-scrollbar { display: none; }
+
+        .message { max-width: 80%; padding: 16px 20px; border-radius: 20px; font-size: 15px; line-height: 1.5; animation: fadeInUp 0.4s ease-out; position: relative; }
+        .user-msg { align-self: flex-end; background: var(--primary); color: #020617; font-weight: 500; border-bottom-right-radius: 4px; }
+        .guru-msg { align-self: flex-start; background: var(--glass); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+
+        .input-area { padding: 30px 40px; background: rgba(2, 6, 23, 0.9); border-top: 1px solid var(--border); }
+        .input-wrap { max-width: 800px; margin: 0 auto; display: flex; gap: 15px; position: relative; }
+        input { flex: 1; background: var(--glass); border: 1px solid var(--border); padding: 16px 25px; border-radius: 50px; color: white; outline: none; font-size: 15px; transition: 0.3s; }
+        input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(56, 189, 248, 0.1); }
+        .send-btn { background: var(--primary); border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 20px; transition: 0.3s; }
+        .send-btn:hover { transform: scale(1.1); }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .typing { font-size: 12px; color: var(--primary); margin-top: -10px; display: none; }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="/" class="logo">IPL PULSE</a>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/live-score">Live Score</a>
+        <a href="/news">News</a>
+        <a href="/chatbot" style="color:var(--primary); font-weight:700">Chat Guru</a>
+    </nav>
+</header>
+
+<div class="chat-container" id="chat-box">
+    <div class="message guru-msg">Namaste! I am your IPL Guru. Ask me anything about today's match or IPL history!</div>
+</div>
+
+<div class="input-area">
+    <div class="typing" id="typing-indicator">Guru is thinking...</div>
+    <div class="input-wrap">
+        <input type="text" id="user-input" placeholder="Ask about SRH vs KKR, records, or tactics..." onkeypress="handleKey(event)">
+        <button class="send-btn" onclick="sendMessage()">→</button>
+    </div>
+</div>
+
+<script>
+    async function sendMessage() {
+        const input = document.getElementById('user-input');
+        const box = document.getElementById('chat-box');
+        const msg = input.value.trim();
+        if(!msg) return;
+
+        // User Message
+        const userDiv = document.createElement('div');
+        userDiv.className = 'message user-msg';
+        userDiv.innerText = msg;
+        box.appendChild(userDiv);
+        input.value = '';
+        box.scrollTop = box.scrollHeight;
+
+        // Typing indicator
+        document.getElementById('typing-indicator').style.display = 'block';
+
+        try {
+            const res = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({message: msg})
+            });
+            const data = await res.json();
+            
+            const guruDiv = document.createElement('div');
+            guruDiv.className = 'message guru-msg';
+            guruDiv.innerText = data.reply;
+            box.appendChild(guruDiv);
+        } catch(e) {
+            console.error(e);
+        } finally {
+            document.getElementById('typing-indicator').style.display = 'none';
+            box.scrollTop = box.scrollHeight;
+        }
+    }
+
+    function handleKey(e) {
+        if(e.key === 'Enter') sendMessage();
+    }
+</script>
+
+</body>
+</html>
